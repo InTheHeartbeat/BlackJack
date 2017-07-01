@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BlackJack.Game.Base;
-using BlackJack.Game.Entities.Enums;
-using BlackJack.Game.Entities.Interfaces;
+using BlackJack.Game.Entities.Card.Interfaces;
+using BlackJack.Game.Enums;
 
-namespace BlackJack.Game.Entities
+namespace BlackJack.Game.Entities.Card
 {
     public class Deck : IDeck
     {

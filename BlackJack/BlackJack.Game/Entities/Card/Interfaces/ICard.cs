@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BlackJack.Game.Entities.Enums;
+using BlackJack.Game.Enums;
 
-namespace BlackJack.Game.Entities.Interfaces
+namespace BlackJack.Game.Entities.Card.Interfaces
 {
     public interface ICard
     {

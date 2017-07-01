@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace BlackJack.Game.Entities.Interfaces
 {
-    public interface IHand
+    public interface ICardHolder
     {
-        IList<ICard> Cards { get; set; }
-        int CurrentScore { get; set; }
+        IHand Hand { get; set; }
     }
 }
