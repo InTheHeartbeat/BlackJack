@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlackJack.Game.Entities.Card.Interfaces
 {
-    interface IDeck
+    public interface IDeck
     {       
         void Initialize();
         ICard GetCard();

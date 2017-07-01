@@ -9,8 +9,13 @@ namespace BlackJack.Game.Entities.House
 {
     public class Table : ITable
     {
-        public IHand Hand {get; set; }
+        public IDeck Deck {get; set; }
         public IDealer Dealer { get; set; }
         public List<IPlayer> Players { get; set; }
+
+        public Table()
+        {
+            Players = new List<IPlayer>();
+        }
     }
 }

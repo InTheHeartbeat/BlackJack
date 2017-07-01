@@ -6,7 +6,7 @@ namespace BlackJack.Game.Entities.House.Interfaces
 {
     public interface ITable : IReadOnlyTable
     {
-        IHand Hand { get; set; }
+        IDeck Deck { get; set; }
         new IDealer Dealer { get; set; }
         List<IPlayer> Players { get; set; }
     }
