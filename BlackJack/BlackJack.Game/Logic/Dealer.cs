@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Entities.House.Interfaces;
+using BlackJack.Game.Enums;
 using BlackJack.Game.Logic.Interfaces;
 
 namespace BlackJack.Game.Logic
@@ -13,14 +14,24 @@ namespace BlackJack.Game.Logic
     {
         public IHand Hand { get; set; }
         public ITable Table { get; set; }
+
+        private readonly IGameOperations _operations;
+
+        public Dealer(IGameOperations operations)
+        {
+            _operations = operations;
+        }
+        
         public void RequestBet(IPlayer player)
         {
-            throw new NotImplementedException();
+            _operations.RequestBet(player);
+            player.MakeBet();
         }
 
-        public void RequestAction(IPlayer player)
+        public PlayerAction RequestAction(IPlayer player)
         {
-            throw new NotImplementedException();
+            _operations.RequestAction(player);
+            return player.DoAction();
         }
     }
 }

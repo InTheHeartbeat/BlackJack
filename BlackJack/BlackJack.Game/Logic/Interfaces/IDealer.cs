@@ -1,5 +1,6 @@
 ﻿using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Entities.House.Interfaces;
+using BlackJack.Game.Enums;
 
 namespace BlackJack.Game.Logic.Interfaces
 {
@@ -7,6 +8,6 @@ namespace BlackJack.Game.Logic.Interfaces
     {
         ITable Table { get; set; }
         void RequestBet(IPlayer player);
-        void RequestAction(IPlayer player);
+        PlayerAction RequestAction(IPlayer player);
     }
 }
