@@ -15,7 +15,7 @@ namespace BlackJack.Game.Entities
 
         public Deck()
         {            
-            Initialize();
+            Initialize();            
         }
 
         public void Initialize()
