@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlackJack.Game.Base;
+using BlackJack.Game.Entities.Card;
 using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Entities.House.Interfaces;
 using BlackJack.Game.Enums;
@@ -18,9 +20,11 @@ namespace BlackJack.Game.Logic
 
         private readonly IGameInformingOperations _informingOperations;
 
-        public Dealer(IGameInformingOperations informingOperations)
+        public Dealer(IGameInformingOperations informingOperations, ITable table)
         {
             _informingOperations = informingOperations;
+            Table = table;
+            Hand = new Hand(GameConfigSingleton.Config.HandScoreCalculator);
         }
         
         public void RequestBet(IPlayer player)

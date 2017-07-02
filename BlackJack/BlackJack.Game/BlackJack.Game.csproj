@@ -54,12 +54,14 @@
     <Compile Include="Entities\Card\Interfaces\ICardHolder.cs" />
     <Compile Include="Logic\CardsGiver.cs" />
     <Compile Include="Logic\GameLogicController.cs" />
+    <Compile Include="Logic\HandScoreCalculator.cs" />
     <Compile Include="Logic\Interfaces\IDealer.cs" />
     <Compile Include="Entities\Card\Interfaces\IDeck.cs" />
     <Compile Include="Entities\Card\Interfaces\IHand.cs" />
     <Compile Include="Logic\Interfaces\IGameInformingOperations.cs" />
     <Compile Include="Logic\Interfaces\IGameLogicController.cs" />
     <Compile Include="Logic\Interfaces\IGameOperations.cs" />
+    <Compile Include="Logic\Interfaces\IHandScoreCalculator.cs" />
     <Compile Include="Logic\Interfaces\IPlayer.cs" />
     <Compile Include="Entities\House\Interfaces\IReadOnlyTable.cs" />
     <Compile Include="Entities\House\Interfaces\ITable.cs" />

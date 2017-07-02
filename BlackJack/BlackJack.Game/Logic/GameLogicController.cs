@@ -14,14 +14,15 @@ using BlackJack.Game.Logic.Interfaces;
 namespace BlackJack.Game.Logic
 {
     public class GameLogicController :IGameLogicController
-    {
-        public ITable Table { get; }
+    {        
         public int PlayersCount { get; internal set; }
 
-        private IGameOperations _operations;
-        private IGameInformingOperations _informingOperations;
+        private ITable Table { get; }
 
-        private IPlayerActionHandler _actionHandler;
+        private readonly IGameOperations _operations;
+        private readonly IGameInformingOperations _informingOperations;
+
+        private readonly IPlayerActionHandler _actionHandler;
 
         public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations)
         {
@@ -30,11 +31,7 @@ namespace BlackJack.Game.Logic
 
             Table = new Table()
             {
-                Dealer = new Dealer(informingOperations)
-                {
-                    Hand = new Hand() { Cards = new List<ICard>()}
-                },
-                Deck = new Deck()
+                Dealer = new Dealer(informingOperations, Table)                
             };
 
             _actionHandler = new PlayerActionHandler(Table, _informingOperations);
@@ -47,12 +44,12 @@ namespace BlackJack.Game.Logic
             PrepareDeck();
             GiveOutCards();
 
-            
+            TypingCards();
         }
         private void InitializePlayers()
         {
             RequestPlayersCount();
-            Table.Players.AddRange(_operations.GetPlayers(PlayersCount));
+            Table.Players.AddRange(_operations.GetPlayers(PlayersCount, Table));
         }
         private void RequestPlayersCount()
         {
@@ -84,10 +81,10 @@ namespace BlackJack.Game.Logic
         }
         private void TypingCards()
         {
-            for (int i = 0; i < Table.Players.Count; i++)
-            {                
-                PlayerAction? choosedAction = Table.Dealer.RequestAction(Table.Players[i]);
-                _actionHandler.Handle(Table.Players[i], choosedAction);
+            foreach (IPlayer player in Table.Players)
+            {
+                PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
+                _actionHandler.Handle(player, choosedAction);
             }
         }
     }
