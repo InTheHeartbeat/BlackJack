@@ -45,6 +45,7 @@ namespace BlackJack.Game.Logic
             {
                 _informingOperations.OnHitCard(player);
                 player.Hand.Cards.Add(CardsGiver.PullCard(_table, _informingOperations));
+                _informingOperations.ShowPlayerScore(player);
             }
         }
     }

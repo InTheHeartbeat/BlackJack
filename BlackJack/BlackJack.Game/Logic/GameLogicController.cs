@@ -85,6 +85,7 @@ namespace BlackJack.Game.Logic
             {
                 PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
                 _actionHandler.Handle(player, choosedAction);
+                
             }
         }
     }
