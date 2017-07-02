@@ -8,6 +8,7 @@ using BlackJack.Game.Entities.Card;
 using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Entities.House;
 using BlackJack.Game.Entities.House.Interfaces;
+using BlackJack.Game.Enums;
 using BlackJack.Game.Logic.Interfaces;
 
 namespace BlackJack.Game.Logic
@@ -18,19 +19,22 @@ namespace BlackJack.Game.Logic
         public int PlayersCount { get; internal set; }
 
         private IGameOperations _operations;
-        
+        private IGameInformingOperations _informingOperations;
 
+        private IPlayerActionHandler _actionHandler;
 
-        public GameLogicController(IGameOperations operations)
+        public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations)
         {
-            _operations = operations;            
+            _operations = operations;
+            _informingOperations = informingOperations;            
 
             Table = new Table()
             {
-                Dealer = new Dealer(operations),
+                Dealer = new Dealer(informingOperations),
                 Deck = new Deck()
             };
 
+            _actionHandler = new PlayerActionHandler(Table, _informingOperations);
         }
 
         public void RunGame()
@@ -39,6 +43,8 @@ namespace BlackJack.Game.Logic
             RequestPlayersBets();
             PrepareDeck();
             GiveOutCards();
+
+            
         }
         private void InitializePlayers()
         {
@@ -49,7 +55,6 @@ namespace BlackJack.Game.Logic
         {
             PlayersCount = _operations.RequestPlayersCount();
         }
-
         private void RequestPlayersBets()
         {
             Table.Players.ForEach(player=>Table.Dealer.RequestBet(player));
@@ -71,13 +76,16 @@ namespace BlackJack.Game.Logic
 
         private void GiveCard(ICardHolder holder)
         {
-            ICard pullCard = Table.Deck.GetCard();
-            holder.Hand.Cards.Add(pullCard);            
-
-            if (holder is Dealer && holder.Hand.Cards.Count == 1)            
-                _operations.OnPullHoleCard(pullCard);
-            else            
-                _operations.OnPullCard(pullCard);            
+            CardsGiver.GiveCard(holder, Table, _informingOperations);
+        }
+        private void TypingCards()
+        {
+            for (int i = 0; i < Table.Players.Count; i++)
+            {
+                _informingOperations.OnChoicePlayerAction(Table.Players[i]);
+                PlayerAction choosedAction = Table.Dealer.RequestAction(Table.Players[i]);
+                _actionHandler.Handle(Table.Players[i], choosedAction);
+            }
         }
     }
 }

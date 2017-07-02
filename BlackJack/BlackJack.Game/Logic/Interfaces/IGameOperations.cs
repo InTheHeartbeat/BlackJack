@@ -9,11 +9,8 @@ namespace BlackJack.Game.Logic.Interfaces
 {
     public interface IGameOperations
     {
-        void OnRequestBet(IPlayer player);
-        void OnRequestAction(IPlayer player);
+        
         int RequestPlayersCount();
-        IEnumerable<IPlayer> GetPlayers();
-        void OnPullCard(ICard pullCard);
-        void OnPullHoleCard(ICard pullCard);
+        IEnumerable<IPlayer> GetPlayers();        
     }
 }

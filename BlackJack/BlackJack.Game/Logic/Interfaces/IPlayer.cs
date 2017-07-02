@@ -6,7 +6,8 @@ namespace BlackJack.Game.Logic.Interfaces
 {
     public interface IPlayer : ICardHolder
     {
-        IReadOnlyTable Table { get; set; }            
+        IReadOnlyTable Table { get; set; }
+        bool Lose { get; set; }
         double MakeBet();
         PlayerAction DoAction();
     }

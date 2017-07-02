@@ -15,22 +15,22 @@ namespace BlackJack.Game.Logic
         public IHand Hand { get; set; }
         public ITable Table { get; set; }
 
-        private readonly IGameOperations _operations;
+        private readonly IGameInformingOperations _informingOperations;
 
-        public Dealer(IGameOperations operations)
+        public Dealer(IGameInformingOperations informingOperations)
         {
-            _operations = operations;
+            _informingOperations = informingOperations;
         }
         
         public void RequestBet(IPlayer player)
         {
-            _operations.RequestBet(player);
+            _informingOperations.OnRequestBet(player);
             player.MakeBet();
         }
 
         public PlayerAction RequestAction(IPlayer player)
         {
-            _operations.RequestAction(player);
+            _informingOperations.OnRequestAction(player);
             return player.DoAction();
         }
     }
