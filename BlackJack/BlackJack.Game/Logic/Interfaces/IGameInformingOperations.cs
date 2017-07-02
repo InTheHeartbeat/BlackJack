@@ -12,9 +12,9 @@ namespace BlackJack.Game.Logic.Interfaces
         void OnRequestBet(IPlayer player);
         void OnRequestAction(IPlayer player);
         void OnPullCard(ICard pullCard);
-        void OnPullHoleCard(ICard pullCard);
-        void OnChoicePlayerAction(IPlayer tablePlayer);
+        void OnPullHoleCard(ICard pullCard);        
         void OnHitCard(IPlayer player);
         void OnPlayerStand(IPlayer player);
+        void OnGiveCard(ICardHolder holder);
     }
 }

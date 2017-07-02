@@ -37,7 +37,8 @@ namespace BlackJack.Game.Entities.Card
         
         public ICard GetCard()
         {
-            throw new NotImplementedException();
+
+            return _cards.Pop();
         }
     }
 }

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>866206d6-8d84-4d2b-8bfc-c2ec5e3ebd14</ProjectGuid>
+    <ProjectGuid>{866206D6-8D84-4D2B-8BFC-C2EC5E3EBD14}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BlackJack.Game</RootNamespace>
@@ -30,25 +30,46 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System"/>
-    
-    <Reference Include="System.Core"/>
-    <Reference Include="System.Xml.Linq"/>
-    <Reference Include="System.Data.DataSetExtensions"/>
-    
-    
-    <Reference Include="Microsoft.CSharp"/>
-    
-    <Reference Include="System.Data"/>
-    
-    <Reference Include="System.Net.Http"/>
-    
-    <Reference Include="System.Xml"/>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Base\GameConfigSingleton.cs" />
+    <Compile Include="Base\ShuffleStackExtension.cs" />
+    <Compile Include="Entities\Card\Card.cs" />
+    <Compile Include="Entities\Card\Deck.cs" />
+    <Compile Include="Enums\Face.cs" />
+    <Compile Include="Enums\PlayerAction.cs" />
+    <Compile Include="Enums\Suit.cs" />
+    <Compile Include="Entities\Card\Hand.cs" />
+    <Compile Include="Entities\Card\Interfaces\ICard.cs" />
+    <Compile Include="Entities\Card\Interfaces\ICardHolder.cs" />
+    <Compile Include="Logic\CardsGiver.cs" />
+    <Compile Include="Logic\GameLogicController.cs" />
+    <Compile Include="Logic\Interfaces\IDealer.cs" />
+    <Compile Include="Entities\Card\Interfaces\IDeck.cs" />
+    <Compile Include="Entities\Card\Interfaces\IHand.cs" />
+    <Compile Include="Logic\Interfaces\IGameInformingOperations.cs" />
+    <Compile Include="Logic\Interfaces\IGameLogicController.cs" />
+    <Compile Include="Logic\Interfaces\IGameOperations.cs" />
+    <Compile Include="Logic\Interfaces\IPlayer.cs" />
+    <Compile Include="Entities\House\Interfaces\IReadOnlyTable.cs" />
+    <Compile Include="Entities\House\Interfaces\ITable.cs" />
+    <Compile Include="Entities\House\Table.cs" />
+    <Compile Include="Logic\Dealer.cs" />
+    <Compile Include="Logic\Interfaces\IPlayerActionHandler.cs" />
+    <Compile Include="Logic\PlayerActionHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -57,5 +78,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-
- </Project>
+</Project>

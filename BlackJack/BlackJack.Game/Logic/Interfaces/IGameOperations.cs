@@ -8,9 +8,8 @@ using BlackJack.Game.Entities.Card.Interfaces;
 namespace BlackJack.Game.Logic.Interfaces
 {
     public interface IGameOperations
-    {
-        
+    {        
         int RequestPlayersCount();
-        IEnumerable<IPlayer> GetPlayers();        
+        IEnumerable<IPlayer> GetPlayers(int playerCount);        
     }
 }

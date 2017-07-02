@@ -22,7 +22,7 @@ namespace BlackJack.Game.Logic
         }
 
 
-        public void Handle(IPlayer player, PlayerAction action)
+        public void Handle(IPlayer player, PlayerAction? action)
         {
             switch (action)
             {

@@ -8,6 +8,6 @@ namespace BlackJack.Game.Logic.Interfaces
     {
         ITable Table { get; set; }
         void RequestBet(IPlayer player);
-        PlayerAction RequestAction(IPlayer player);
+        PlayerAction? RequestAction(IPlayer player);
     }
 }

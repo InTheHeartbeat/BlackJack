@@ -30,7 +30,10 @@ namespace BlackJack.Game.Logic
 
             Table = new Table()
             {
-                Dealer = new Dealer(informingOperations),
+                Dealer = new Dealer(informingOperations)
+                {
+                    Hand = new Hand() { Cards = new List<ICard>()}
+                },
                 Deck = new Deck()
             };
 
@@ -49,7 +52,7 @@ namespace BlackJack.Game.Logic
         private void InitializePlayers()
         {
             RequestPlayersCount();
-            Table.Players.AddRange(_operations.GetPlayers());
+            Table.Players.AddRange(_operations.GetPlayers(PlayersCount));
         }
         private void RequestPlayersCount()
         {
@@ -76,14 +79,14 @@ namespace BlackJack.Game.Logic
 
         private void GiveCard(ICardHolder holder)
         {
+            _informingOperations.OnGiveCard(holder);
             CardsGiver.GiveCard(holder, Table, _informingOperations);
         }
         private void TypingCards()
         {
             for (int i = 0; i < Table.Players.Count; i++)
-            {
-                _informingOperations.OnChoicePlayerAction(Table.Players[i]);
-                PlayerAction choosedAction = Table.Dealer.RequestAction(Table.Players[i]);
+            {                
+                PlayerAction? choosedAction = Table.Dealer.RequestAction(Table.Players[i]);
                 _actionHandler.Handle(Table.Players[i], choosedAction);
             }
         }

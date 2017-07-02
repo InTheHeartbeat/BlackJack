@@ -12,6 +12,7 @@ namespace BlackJack.Game.Logic
 {
     public class Dealer : IDealer
     {
+        public int Id { get; set; }        
         public IHand Hand { get; set; }
         public ITable Table { get; set; }
 
@@ -28,7 +29,7 @@ namespace BlackJack.Game.Logic
             player.MakeBet();
         }
 
-        public PlayerAction RequestAction(IPlayer player)
+        public PlayerAction? RequestAction(IPlayer player)
         {
             _informingOperations.OnRequestAction(player);
             return player.DoAction();
