@@ -10,12 +10,14 @@ namespace BlackJack.Game.Base
 {
     public class GameConfigSingleton
     {
-        public static GameConfigSingleton Config => _instance ?? (_instance = new GameConfigSingleton());
+        public static GameConfigSingleton Config => _instance ?? (_instance = new GameConfigSingleton());        
         private static GameConfigSingleton _instance;
 
         public readonly int InitialCardsCount = 2;
         public readonly int MaxPlayers = 7;
         public readonly int MinPlayers = 1;
+
+        public readonly double InitialPlayerBankroll = 100;
 
         public readonly IHandScoreCalculator HandScoreCalculator = new HandScoreCalculator();
     }

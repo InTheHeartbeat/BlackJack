@@ -18,5 +18,6 @@ namespace BlackJack.Game.Logic.Interfaces
         void OnGiveCard(ICardHolder holder);
 
         void ShowPlayerScore(ICardHolder holder);
+        void OnPlayerLost(IPlayer player);
     }
 }

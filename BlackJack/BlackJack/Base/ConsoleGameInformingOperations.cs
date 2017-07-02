@@ -13,7 +13,7 @@ namespace BlackJack.Base
         public void OnRequestBet(IPlayer player)
         {
             Console.WriteLine();
-            Console.WriteLine($"Player #{player.Id}, please make a your bet:");
+            Console.WriteLine($"Player #{player.Id}, your bankroll {player.Bankroll}, please make a your bet:");
         }
 
         public void OnRequestAction(IPlayer player)
@@ -35,11 +35,13 @@ namespace BlackJack.Base
 
         public void OnHitCard(IPlayer player)
         {
+            Console.WriteLine();
             Console.WriteLine($"Player #{player.Id} ({player.Hand.CurrentScore} score), decided to choose *hit*");
         }
 
         public void OnPlayerStand(IPlayer player)
         {
+            Console.WriteLine();
             Console.WriteLine($"Player #{player.Id} ({player.Hand.CurrentScore} score), decided to choose *stand*");
         }
 
@@ -51,6 +53,15 @@ namespace BlackJack.Base
         public void ShowPlayerScore(ICardHolder holder)
         {
             Console.WriteLine($"{(holder.Id == 0 ? "Dealer" : $"Player #{holder.Id}")} has a {holder.Hand.CurrentScore} score");
+            Console.WriteLine();
+        }
+
+        public void OnPlayerLost(IPlayer player)
+        {            
+            ConsoleColor temp = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Player #{player.Id} lost with the score {player.Hand.CurrentScore}, player bankroll: {player.Bankroll}");
+            Console.ForegroundColor = temp;
             Console.WriteLine();
         }
     }

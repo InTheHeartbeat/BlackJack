@@ -18,12 +18,14 @@ namespace BlackJack.Logic
         public int Id { get; set; }
         public IHand Hand { get; set; }
         public IReadOnlyTable Table { get; set; }
+        public double Bankroll { get; set; }
         public bool Lose { get; set; }
 
         public Player(IReadOnlyTable table)
         {
             Hand = new Hand(GameConfigSingleton.Config.HandScoreCalculator);
             Table = table;
+            Bankroll = GameConfigSingleton.Config.InitialPlayerBankroll;
         }
 
         public double MakeBet()

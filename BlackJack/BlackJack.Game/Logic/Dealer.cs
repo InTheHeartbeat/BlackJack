@@ -20,23 +20,31 @@ namespace BlackJack.Game.Logic
 
         private readonly IGameInformingOperations _informingOperations;
 
+        private Dictionary<IPlayer, double> _playerPairBet;
+
         public Dealer(IGameInformingOperations informingOperations, ITable table)
         {
             _informingOperations = informingOperations;
             Table = table;
             Hand = new Hand(GameConfigSingleton.Config.HandScoreCalculator);
+            _playerPairBet = new Dictionary<IPlayer, double>();
         }
         
         public void RequestBet(IPlayer player)
         {
             _informingOperations.OnRequestBet(player);
-            player.MakeBet();
+            _playerPairBet.Add(player,player.MakeBet());
         }
 
         public PlayerAction? RequestAction(IPlayer player)
         {
             _informingOperations.OnRequestAction(player);
             return player.DoAction();
+        }
+
+        public double GetBetValue(IPlayer player)
+        {
+            return _playerPairBet[player];
         }
     }
 }
