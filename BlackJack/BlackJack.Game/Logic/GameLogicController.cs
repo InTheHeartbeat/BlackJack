@@ -48,16 +48,11 @@ namespace BlackJack.Game.Logic
                 DealerPlay();
 
                 FinalizeRound();
-                if(!IsContinue())
+                if(!_operations.RequestContinue())
                     break;                
             }
         }
-
-        private bool IsContinue()
-        {
-            return _operations.RequestContinue();
-        }
-
+        
         private void InitializePlayers()
         {
             RequestPlayersCount();
@@ -120,12 +115,24 @@ namespace BlackJack.Game.Logic
                     else if (!isStandPlayers[player])
                     {
                         PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
-                        _actionHandler.Handle(player, choosedAction);
+                        _actionHandler.HandleAction(player, choosedAction);
 
                         if (choosedAction == PlayerAction.Stand)
                             isStandPlayers[player] = true;
                     }
                 }
+            }
+        }
+
+        private void DealerPlay()
+        {
+            _informingOperations.ShowDealerHoleCard(Table.Dealer.Hand.Cards.Last());
+            _informingOperations.ShowPlayerScore(Table.Dealer);
+
+            while (Table.Dealer.Hand.CurrentScore <= 16)
+            {
+                GiveCard(Table.Dealer);
+                _informingOperations.ShowPlayerScore(Table.Dealer);
             }
         }
 
@@ -140,54 +147,19 @@ namespace BlackJack.Game.Logic
         {
             Table.Players.Where(CheckNativeBlackJack)
                 .ToList()
-                .ForEach(HandleNativeBlackJackWinner);
+                .ForEach(_actionHandler.HandleNativeBlackJackWinner);
 
             Table.Players.Where(player => !player.Lost && (player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore || Table.Dealer.Hand.CurrentScore > 21) && !CheckNativeBlackJack(player))
                 .ToList()
-                .ForEach(HandleWinner);
+                .ForEach(_actionHandler.HandleWinner);
 
             Table.Players.Where(player => !player.Lost && player.Hand.CurrentScore == Table.Dealer.Hand.CurrentScore)
                 .ToList()
-                .ForEach(HandleStandoff);
+                .ForEach(_actionHandler.HandleStandoff);
 
             Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= 21 && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
                 .ToList()
-                .ForEach(HandleLostPlayer);                        
-        }
-
-        private void HandleLostPlayer(IPlayer player)
-        {
-            player.Bankroll -= Table.Dealer.GetBetValue(player);
-            _informingOperations.OnPlayerLost(player);
-        }
-
-        private void HandleWinner(IPlayer player)
-        {
-            player.Bankroll += Table.Dealer.GetBetValue(player);
-            _informingOperations.OnPlayerWon(player);
-        }
-
-        private void HandleNativeBlackJackWinner(IPlayer player)
-        {
-            player.Bankroll += Table.Dealer.GetBetValue(player) * 1.5;
-            _informingOperations.OnPlayerWonBlackJack(player);
-        }
-
-        private void HandleStandoff(IPlayer player)
-        {
-            _informingOperations.OnPlayerStandoff(player);
-        }
-
-        private void DealerPlay()
-        {
-            _informingOperations.ShowDealerHoleCard(Table.Dealer.Hand.Cards.Last());
-            _informingOperations.ShowPlayerScore(Table.Dealer);
-
-            while (Table.Dealer.Hand.CurrentScore <= 16)
-            {
-                GiveCard(Table.Dealer);
-                _informingOperations.ShowPlayerScore(Table.Dealer);
-            }
-        }
+                .ForEach(_actionHandler.HandleLostPlayer);                        
+        }                
     }
 }

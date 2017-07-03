@@ -22,7 +22,7 @@ namespace BlackJack.Game.Logic
         }
 
 
-        public void Handle(IPlayer player, PlayerAction? action)
+        public void HandleAction(IPlayer player, PlayerAction? action)
         {
             switch (action)
             {
@@ -32,6 +32,29 @@ namespace BlackJack.Game.Logic
                     case PlayerAction.Stand:
                         HandleStand(player);break;
             }
+        }
+
+        public void HandleLostPlayer(IPlayer player)
+        {
+            player.Bankroll -= _table.Dealer.GetBetValue(player);
+            _informingOperations.OnPlayerLost(player);
+        }
+
+        public void HandleWinner(IPlayer player)
+        {
+            player.Bankroll += _table.Dealer.GetBetValue(player);
+            _informingOperations.OnPlayerWon(player);
+        }
+
+        public void HandleNativeBlackJackWinner(IPlayer player)
+        {
+            player.Bankroll += _table.Dealer.GetBetValue(player) * 1.5;
+            _informingOperations.OnPlayerWonBlackJack(player);
+        }
+
+        public void HandleStandoff(IPlayer player)
+        {
+            _informingOperations.OnPlayerStandoff(player);
         }
 
         private void HandleStand(IPlayer player)

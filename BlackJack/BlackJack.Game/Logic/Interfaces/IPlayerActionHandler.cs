@@ -9,6 +9,10 @@ namespace BlackJack.Game.Logic.Interfaces
 {
     interface IPlayerActionHandler
     {
-        void Handle(IPlayer player, PlayerAction? action);
+        void HandleAction(IPlayer player, PlayerAction? action);
+        void HandleStandoff(IPlayer player);
+        void HandleLostPlayer(IPlayer player);
+        void HandleWinner(IPlayer player);
+        void HandleNativeBlackJackWinner(IPlayer player);
     }
 }
