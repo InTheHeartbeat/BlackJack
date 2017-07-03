@@ -19,7 +19,7 @@ namespace BlackJack.Logic
         public IHand Hand { get; set; }
         public IReadOnlyTable Table { get; set; }
         public double Bankroll { get; set; }
-        public bool Lose { get; set; }
+        public bool Lost { get; set; }
 
         public Player(IReadOnlyTable table)
         {

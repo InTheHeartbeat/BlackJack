@@ -41,7 +41,7 @@ namespace BlackJack.Game.Logic
 
         private void HandleHit(IPlayer player)
         {
-            if (player.Hand.CurrentScore < 21 && !player.Lose)
+            if (player.Hand.CurrentScore < 21 && !player.Lost)
             {
                 _informingOperations.OnHitCard(player);
                 player.Hand.Cards.Add(CardsGiver.PullCard(_table, _informingOperations));
@@ -49,8 +49,7 @@ namespace BlackJack.Game.Logic
 
                 if (player.Hand.CurrentScore > 21)
                 {
-                    player.Lose = true;
-                    player.Bankroll -= _table.Dealer.GetBetValue(player);
+                    player.Lost = true;                    
                     _informingOperations.OnPlayerLost(player);
                 }
             }

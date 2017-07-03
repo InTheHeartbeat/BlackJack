@@ -8,7 +8,7 @@ namespace BlackJack.Game.Logic.Interfaces
     {
         IReadOnlyTable Table { get; set; }
         double Bankroll { get; set; }
-        bool Lose { get; set; }        
+        bool Lost { get; set; }        
         double MakeBet();
         PlayerAction? DoAction();
     }

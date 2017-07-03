@@ -30,18 +30,17 @@ namespace BlackJack.Base
 
         public void OnPullHoleCard(ICard pullCard)
         {
-            Console.WriteLine($"Pulled card it *hole card*");            
+            Console.WriteLine($"Pulled card it *hole card*");
+            Console.WriteLine();
         }       
 
         public void OnHitCard(IPlayer player)
-        {
-            Console.WriteLine();
+        {            
             Console.WriteLine($"Player #{player.Id} ({player.Hand.CurrentScore} score), decided to choose *hit*");
         }
 
         public void OnPlayerStand(IPlayer player)
-        {
-            Console.WriteLine();
+        {            
             Console.WriteLine($"Player #{player.Id} ({player.Hand.CurrentScore} score), decided to choose *stand*");
         }
 
@@ -51,9 +50,15 @@ namespace BlackJack.Base
         }
 
         public void ShowPlayerScore(ICardHolder holder)
-        {
+        {            
             Console.WriteLine($"{(holder.Id == 0 ? "Dealer" : $"Player #{holder.Id}")} has a {holder.Hand.CurrentScore} score");
-            Console.WriteLine();
+            if (holder.Hand.CurrentScore == 21 && holder.Hand.Cards.Count == 2)
+            {
+                ConsoleColor temp = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine($"Player #{holder.Id}, won - NATIVE BLACK JACK");
+                Console.ForegroundColor = temp;
+            }            
         }
 
         public void OnPlayerLost(IPlayer player)
@@ -61,8 +66,23 @@ namespace BlackJack.Base
             ConsoleColor temp = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"Player #{player.Id} lost with the score {player.Hand.CurrentScore}, player bankroll: {player.Bankroll}");
+            Console.ForegroundColor = temp;            
+        }
+
+        public void OnPlayerWon(IPlayer player)
+        {
+            ConsoleColor temp = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Player #{player.Id} won with the score {player.Hand.CurrentScore}, player bankroll: {player.Bankroll}");
             Console.ForegroundColor = temp;
-            Console.WriteLine();
+        }
+
+        public void OnPlayerWonBlackJack(IPlayer player)
+        {
+            ConsoleColor temp = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.WriteLine($"Player #{player.Id} won BLACKJACK, player bankroll: {player.Bankroll}");
+            Console.ForegroundColor = temp;
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using BlackJack.Game.Base;
 using BlackJack.Game.Entities.Card;
@@ -13,8 +14,8 @@ using BlackJack.Game.Logic.Interfaces;
 
 namespace BlackJack.Game.Logic
 {
-    public class GameLogicController :IGameLogicController
-    {        
+    public class GameLogicController : IGameLogicController
+    {
         public int PlayersCount { get; internal set; }
 
         private ITable Table { get; }
@@ -27,11 +28,11 @@ namespace BlackJack.Game.Logic
         public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations)
         {
             _operations = operations;
-            _informingOperations = informingOperations;            
+            _informingOperations = informingOperations;
 
             Table = new Table()
             {
-                Dealer = new Dealer(informingOperations, Table)                
+                Dealer = new Dealer(informingOperations, Table)
             };
 
             _actionHandler = new PlayerActionHandler(Table, _informingOperations);
@@ -39,25 +40,29 @@ namespace BlackJack.Game.Logic
 
         public void RunGame()
         {
-            InitializePlayers();   
+            InitializePlayers();
             RequestPlayersBets();
             PrepareDeck();
             GiveOutCards();
 
             TypingCards();
+            FinalizeRound();
         }
+
         private void InitializePlayers()
         {
             RequestPlayersCount();
             Table.Players.AddRange(_operations.GetPlayers(PlayersCount, Table));
         }
+
         private void RequestPlayersCount()
         {
             PlayersCount = _operations.RequestPlayersCount();
         }
+
         private void RequestPlayersBets()
         {
-            Table.Players.ForEach(player=>Table.Dealer.RequestBet(player));
+            Table.Players.ForEach(player => Table.Dealer.RequestBet(player));
         }
 
         private void PrepareDeck()
@@ -68,25 +73,84 @@ namespace BlackJack.Game.Logic
         private void GiveOutCards()
         {
             for (int i = 0; i < GameConfigSingleton.Config.InitialCardsCount; i++)
-            {                  
-                Table.Players.ForEach(GiveCard);                
+            {
+                Table.Players.ForEach(GiveCard);
                 GiveCard(Table.Dealer);
             }
+            Table.Players.ForEach(_informingOperations.ShowPlayerScore);
         }
 
         private void GiveCard(ICardHolder holder)
         {
             _informingOperations.OnGiveCard(holder);
             CardsGiver.GiveCard(holder, Table, _informingOperations);
+            Thread.Sleep(TimeSpan.FromSeconds(0.5));
         }
+
         private void TypingCards()
         {
-            foreach (IPlayer player in Table.Players)
+            Dictionary<IPlayer, bool> isStandPlayers = Table.Players.ToDictionary(player => player, player => false);
+
+            while (isStandPlayers.Values.Contains(false))
             {
-                PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
-                _actionHandler.Handle(player, choosedAction);
-                
+                foreach (IPlayer player in Table.Players)
+                {
+                    if (player.Lost)
+                        isStandPlayers[player] = true;
+                    else if (CheckNativeBlackJack(player))
+                        isStandPlayers[player] = true;
+                    else if (player.Hand.CurrentScore == 21)
+                        isStandPlayers[player] = true;
+                    else if (!isStandPlayers[player])
+                    {
+                        PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
+                        _actionHandler.Handle(player, choosedAction);
+
+                        if (choosedAction == PlayerAction.Stand)
+                            isStandPlayers[player] = true;
+                    }
+                }
             }
+        }
+
+        private bool CheckNativeBlackJack(IPlayer player)
+        {
+            if (player.Hand.CurrentScore == 21 && player.Hand.Cards.Count <= 2)
+                return true;
+            return false;
+        }
+
+        private void FinalizeRound()
+        {
+            Table.Players.Where(player => player.Lost)
+                .ToList()
+                .ForEach(HandleLostPlayer);
+
+            Table.Players.Where(player => !player.Lost && player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore)
+                .ToList()
+                .ForEach(HandleWinner);
+
+            Table.Players.Where(CheckNativeBlackJack)
+                .ToList()
+                .ForEach(HandleNativeBlackJackWinner);
+        }
+
+        private void HandleLostPlayer(IPlayer player)
+        {
+            player.Bankroll -= Table.Dealer.GetBetValue(player);
+            _informingOperations.OnPlayerLost(player);
+        }
+
+        private void HandleWinner(IPlayer player)
+        {
+            player.Bankroll += Table.Dealer.GetBetValue(player);
+            _informingOperations.OnPlayerWon(player);
+        }
+
+        private void HandleNativeBlackJackWinner(IPlayer player)
+        {
+            player.Bankroll += Table.Dealer.GetBetValue(player) * 1.5;
+            _informingOperations.OnPlayerWonBlackJack(player);
         }
     }
 }
