@@ -47,5 +47,24 @@ namespace BlackJack.Base
             }
             return players;
         }
+
+        public bool RequestContinue()
+        {
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("Continue? (y/n)");            
+            string readLine = Console.ReadLine().Replace(" ", "").ToLower();
+            while (readLine != "n" && readLine != "y")
+            {
+                Console.WriteLine("Invalid value, please enter valid value (y/n)");
+                readLine = Console.ReadLine().Replace(" ", "").ToLower();
+            }
+            if (readLine == "n")
+                return false;
+            if (readLine == "y")
+                return true;
+            return false;
+        }
     }
 }

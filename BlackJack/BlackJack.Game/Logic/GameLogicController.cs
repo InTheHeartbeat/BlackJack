@@ -27,28 +27,35 @@ namespace BlackJack.Game.Logic
 
         public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations)
         {
+            Table = new Table();
+
             _operations = operations;
-            _informingOperations = informingOperations;
-
-            Table = new Table()
-            {
-                Dealer = new Dealer(informingOperations, Table)
-            };
-
-            _actionHandler = new PlayerActionHandler(Table, _informingOperations);
+            _informingOperations = informingOperations;            
+            _actionHandler = new PlayerActionHandler(Table, _informingOperations);            
         }
 
         public void RunGame()
         {
             InitializePlayers();
-            RequestPlayersBets();
-            PrepareDeck();
-            GiveOutCards();
+            while (true)
+            {
+                PrepareTable();
 
-            TypingCards();
-            DealerPlay();
+                RequestPlayersBets();                
+                GiveOutCards();
 
-            FinalizeRound();
+                TypingCards();
+                DealerPlay();
+
+                FinalizeRound();
+                if(!IsContinue())
+                    break;                
+            }
+        }
+
+        private bool IsContinue()
+        {
+            return _operations.RequestContinue();
         }
 
         private void InitializePlayers()
@@ -67,9 +74,16 @@ namespace BlackJack.Game.Logic
             Table.Players.ForEach(player => Table.Dealer.RequestBet(player));
         }
 
-        private void PrepareDeck()
-        {
+        private void PrepareTable()
+        {            
+            Table.Dealer = new Dealer(_informingOperations, Table);
             Table.Deck = new Deck();
+
+            foreach (IPlayer player in Table.Players)
+            {
+                player.Lost = false;
+                player.Hand.Cards.Clear();                
+            }
         }
 
         private void GiveOutCards()
