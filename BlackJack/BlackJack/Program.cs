@@ -13,10 +13,8 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
-            GameLogicController a = new GameLogicController(new ConsoleGameOperations(), new ConsoleGameInformingOperations());
-            a.RunGame();
-
-            Console.ReadLine();
+            GameLogicController gameLogicController = new GameLogicController(new ConsoleGameOperations(), new ConsoleGameInformingOperations(), null);
+            gameLogicController.RunGame();            
         }
     }
 }

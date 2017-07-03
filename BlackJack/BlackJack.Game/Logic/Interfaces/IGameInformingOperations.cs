@@ -16,12 +16,13 @@ namespace BlackJack.Game.Logic.Interfaces
         void OnHitCard(IPlayer player);
         void OnPlayerStand(IPlayer player);
         void OnGiveCard(ICardHolder holder);
-
-        void ShowPlayerScore(ICardHolder holder);
         void OnPlayerLost(IPlayer player);
         void OnPlayerWon(IPlayer player);
         void OnPlayerWonBlackJack(IPlayer player);
-        void ShowDealerHoleCard(ICard card);
         void OnPlayerStandoff(IPlayer player);
+
+        void ShowPlayerScore(ICardHolder holder);        
+        void ShowDealerHoleCard(ICard card);
+        
     }
 }

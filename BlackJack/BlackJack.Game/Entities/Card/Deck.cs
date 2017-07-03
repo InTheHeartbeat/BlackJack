@@ -19,14 +19,16 @@ namespace BlackJack.Game.Entities.Card
         {
             _cards = new Stack<ICard>();
 
-            for (int suit = 0; suit < 4; suit++)
+            for (int deck = 0; deck < ConfigProvider.Provider.CurrentConfig.DecksCount; deck++)
             {
-                for (int face = 0; face < 13; face++)
+                for (int suit = 0; suit < ConfigProvider.Provider.CurrentConfig.SuitCount; suit++)
                 {
-                    _cards.Push(new Card() { Suit = (Suit)suit, Face = (Face)face });
+                    for (int face = 0; face < ConfigProvider.Provider.CurrentConfig.FaceCount; face++)
+                    {
+                        _cards.Push(new Card() {Suit = (Suit) suit, Face = (Face) face});
+                    }
                 }
-            }            
-
+            }
             ShuffleDeck();
         }
 
@@ -37,7 +39,6 @@ namespace BlackJack.Game.Entities.Card
         
         public ICard GetCard()
         {
-
             return _cards.Pop();
         }
     }

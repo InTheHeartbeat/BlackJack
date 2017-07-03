@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlackJack.Game.Base;
 using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Enums;
 using BlackJack.Game.Logic.Interfaces;
@@ -28,10 +29,10 @@ namespace BlackJack.Game.Logic
         {
             int score = CalcHardHandScore(hand);
 
-            if ((score + 11) <= 21)
-                score += 11;
+            if ((score + ConfigProvider.Provider.CurrentConfig.FirstAceScore) <= ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
+                score += ConfigProvider.Provider.CurrentConfig.FirstAceScore;
             else
-                score += 1;
+                score += ConfigProvider.Provider.CurrentConfig.SecondAceScore;
             return score;
         }
 

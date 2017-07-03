@@ -23,9 +23,9 @@ namespace BlackJack.Logic
 
         public Player(IReadOnlyTable table)
         {
-            Hand = new Hand(GameConfigSingleton.Config.HandScoreCalculator);
+            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.HandScoreCalculator);
             Table = table;
-            Bankroll = GameConfigSingleton.Config.InitialPlayerBankroll;
+            Bankroll = ConfigProvider.Provider.CurrentConfig.InitialPlayerBankroll;
         }
 
         public double MakeBet()

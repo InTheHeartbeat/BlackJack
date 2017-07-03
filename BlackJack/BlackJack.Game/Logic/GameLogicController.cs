@@ -25,8 +25,11 @@ namespace BlackJack.Game.Logic
 
         private readonly IPlayerActionHandler _actionHandler;
 
-        public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations)
+        public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations, GameConfig config)
         {
+            if (config != null)
+                ConfigProvider.Provider.CurrentConfig = config;
+
             Table = new Table();
 
             _operations = operations;
@@ -48,6 +51,7 @@ namespace BlackJack.Game.Logic
                 DealerPlay();
 
                 FinalizeRound();
+
                 if(!_operations.RequestContinue())
                     break;                
             }
@@ -83,7 +87,7 @@ namespace BlackJack.Game.Logic
 
         private void GiveOutCards()
         {
-            for (int i = 0; i < GameConfigSingleton.Config.InitialCardsCount; i++)
+            for (int i = 0; i < ConfigProvider.Provider.CurrentConfig.InitialCardsCount; i++)
             {
                 Table.Players.ForEach(GiveCard);
                 GiveCard(Table.Dealer);
@@ -94,8 +98,7 @@ namespace BlackJack.Game.Logic
         private void GiveCard(ICardHolder holder)
         {
             _informingOperations.OnGiveCard(holder);
-            CardsGiver.GiveCard(holder, Table, _informingOperations);
-            Thread.Sleep(TimeSpan.FromSeconds(0.5));
+            CardsGiver.GiveCard(holder, Table, _informingOperations);            
         }
 
         private void TypingCards()
@@ -110,7 +113,7 @@ namespace BlackJack.Game.Logic
                         isStandPlayers[player] = true;
                     else if (CheckNativeBlackJack(player))
                         isStandPlayers[player] = true;
-                    else if (player.Hand.CurrentScore == 21)
+                    else if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
                         isStandPlayers[player] = true;
                     else if (!isStandPlayers[player])
                     {
@@ -129,7 +132,7 @@ namespace BlackJack.Game.Logic
             _informingOperations.ShowDealerHoleCard(Table.Dealer.Hand.Cards.Last());
             _informingOperations.ShowPlayerScore(Table.Dealer);
 
-            while (Table.Dealer.Hand.CurrentScore <= 16)
+            while (Table.Dealer.Hand.CurrentScore <= ConfigProvider.Provider.CurrentConfig.ScoreLimitOfDealerAbilityToTakeCards)
             {
                 GiveCard(Table.Dealer);
                 _informingOperations.ShowPlayerScore(Table.Dealer);
@@ -138,7 +141,7 @@ namespace BlackJack.Game.Logic
 
         private bool CheckNativeBlackJack(IPlayer player)
         {
-            if (player.Hand.CurrentScore == 21 && player.Hand.Cards.Count <= 2)
+            if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber && player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)
                 return true;
             return false;
         }
@@ -149,7 +152,7 @@ namespace BlackJack.Game.Logic
                 .ToList()
                 .ForEach(_actionHandler.HandleNativeBlackJackWinner);
 
-            Table.Players.Where(player => !player.Lost && (player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore || Table.Dealer.Hand.CurrentScore > 21) && !CheckNativeBlackJack(player))
+            Table.Players.Where(player => !player.Lost && (player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore || Table.Dealer.Hand.CurrentScore > ConfigProvider.Provider.CurrentConfig.BlackJackNumber) && !CheckNativeBlackJack(player))
                 .ToList()
                 .ForEach(_actionHandler.HandleWinner);
 
@@ -157,7 +160,7 @@ namespace BlackJack.Game.Logic
                 .ToList()
                 .ForEach(_actionHandler.HandleStandoff);
 
-            Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= 21 && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
+            Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= ConfigProvider.Provider.CurrentConfig.BlackJackNumber && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
                 .ToList()
                 .ForEach(_actionHandler.HandleLostPlayer);                        
         }                

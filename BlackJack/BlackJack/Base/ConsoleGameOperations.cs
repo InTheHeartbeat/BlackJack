@@ -17,7 +17,7 @@ namespace BlackJack.Base
         public int RequestPlayersCount()
         {
             Console.WriteLine(
-                $"Select players count ({GameConfigSingleton.Config.MinPlayers}-{GameConfigSingleton.Config.MaxPlayers}):");
+                $"Select players count ({ConfigProvider.Provider.CurrentConfig.MinPlayers}-{ConfigProvider.Provider.CurrentConfig.MaxPlayers}):");
 
             int result = 0;
             bool valid = false;
@@ -29,9 +29,9 @@ namespace BlackJack.Base
                     Console.WriteLine("Invalid value, please enter a valid numeric value:");
                 }
 
-                if (result > GameConfigSingleton.Config.MaxPlayers || result < GameConfigSingleton.Config.MinPlayers)
+                if (result > ConfigProvider.Provider.CurrentConfig.MaxPlayers || result < ConfigProvider.Provider.CurrentConfig.MinPlayers)
                     Console.WriteLine(
-                        $"Invalid value, please enter a valid numeric value in range ({GameConfigSingleton.Config.MinPlayers}-{GameConfigSingleton.Config.MaxPlayers}):");
+                        $"Invalid value, please enter a valid numeric value in range ({ConfigProvider.Provider.CurrentConfig.MinPlayers}-{ConfigProvider.Provider.CurrentConfig.MaxPlayers}):");
                 else
                     valid = true;
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BlackJack.Game.Base;
 using BlackJack.Game.Entities.House;
 using BlackJack.Game.Entities.House.Interfaces;
 using BlackJack.Game.Enums;
@@ -48,7 +49,7 @@ namespace BlackJack.Game.Logic
 
         public void HandleNativeBlackJackWinner(IPlayer player)
         {
-            player.Bankroll += _table.Dealer.GetBetValue(player) * 1.5;
+            player.Bankroll += _table.Dealer.GetBetValue(player) * ConfigProvider.Provider.CurrentConfig.BlackJackRatio;
             _informingOperations.OnPlayerWonBlackJack(player);
         }
 
@@ -64,13 +65,13 @@ namespace BlackJack.Game.Logic
 
         private void HandleHit(IPlayer player)
         {
-            if (player.Hand.CurrentScore < 21 && !player.Lost)
+            if (player.Hand.CurrentScore < ConfigProvider.Provider.CurrentConfig.BlackJackNumber && !player.Lost)
             {
                 _informingOperations.OnHitCard(player);
                 player.Hand.Cards.Add(CardsGiver.PullCard(_table, _informingOperations));
                 _informingOperations.ShowPlayerScore(player);
 
-                if (player.Hand.CurrentScore > 21)                
+                if (player.Hand.CurrentScore > ConfigProvider.Provider.CurrentConfig.BlackJackNumber)                
                     player.Lost = true;                                                        
             }
         }        
