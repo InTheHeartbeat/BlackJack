@@ -30,7 +30,23 @@ namespace BlackJack.Logic
 
         public double MakeBet()
         {
-            return double.Parse(Console.ReadLine());
+            double result = 0;
+            bool valid = false;
+
+            while (!valid)
+            {
+                while (!double.TryParse(Console.ReadLine(), out result))
+                {
+                    Console.WriteLine("Invalid value, please enter a valid numeric value:");
+                }
+
+                if (result > this.Bankroll || result < 0)
+                    Console.WriteLine(
+                        $"Invalid value, please enter a valid numeric value in range (0-{this.Bankroll}):");
+                else
+                    valid = true;
+            }
+            return result;
         }
 
         public PlayerAction? DoAction()

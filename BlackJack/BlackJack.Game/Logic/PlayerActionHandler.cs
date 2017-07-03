@@ -39,6 +39,12 @@ namespace BlackJack.Game.Logic
         {
             player.Bankroll -= _table.Dealer.GetBetValue(player);
             _informingOperations.OnPlayerLost(player);
+
+            if (player.Bankroll <= 0)
+            {
+                _table.Players.Remove(player);
+                _informingOperations.OnPlayerBankrupt(player);
+            }
         }
 
         public void HandleWinner(IPlayer player)

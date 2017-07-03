@@ -13,5 +13,6 @@ namespace BlackJack.Game.Logic.Interfaces
         int RequestPlayersCount();
         IEnumerable<IPlayer> GetPlayers(int playerCount, IReadOnlyTable table);
         bool RequestContinue();
+        bool RequestRestart();
     }
 }

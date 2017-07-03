@@ -39,20 +39,30 @@ namespace BlackJack.Game.Logic
 
         public void RunGame()
         {
-            InitializePlayers();
             while (true)
             {
-                PrepareTable();
+                InitializePlayers();
+                while (true)
+                {
+                    if (Table.Players.Count > 0)
+                    {
+                        PrepareTable();
 
-                RequestPlayersBets();                
-                GiveOutCards();
+                        RequestPlayersBets();
+                        GiveOutCards();
 
-                TypingCards();
-                DealerPlay();
+                        TypingCards();
+                        DealerPlay();
 
-                FinalizeRound();
+                        FinalizeRound();
 
-                if(!_operations.RequestContinue())
+                        if (!_operations.RequestContinue())
+                            break;
+                    }
+                    else                    
+                        break;                    
+                }
+                if(!_operations.RequestRestart())
                     break;                
             }
         }
@@ -60,6 +70,7 @@ namespace BlackJack.Game.Logic
         private void InitializePlayers()
         {
             RequestPlayersCount();
+            Table.Players.Clear();
             Table.Players.AddRange(_operations.GetPlayers(PlayersCount, Table));
         }
 
@@ -162,7 +173,7 @@ namespace BlackJack.Game.Logic
 
             Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= ConfigProvider.Provider.CurrentConfig.BlackJackNumber && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
                 .ToList()
-                .ForEach(_actionHandler.HandleLostPlayer);                        
+                .ForEach(_actionHandler.HandleLostPlayer);                                              
         }                
     }
 }

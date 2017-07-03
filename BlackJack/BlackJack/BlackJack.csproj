@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\ConsoleConfig.cs" />
     <Compile Include="Base\ConsoleGameOperations.cs" />
     <Compile Include="Base\ConsoleGameInformingOperations.cs" />
     <Compile Include="Logic\Player.cs" />

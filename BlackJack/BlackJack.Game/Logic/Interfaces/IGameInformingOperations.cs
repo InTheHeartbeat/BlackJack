@@ -20,9 +20,9 @@ namespace BlackJack.Game.Logic.Interfaces
         void OnPlayerWon(IPlayer player);
         void OnPlayerWonBlackJack(IPlayer player);
         void OnPlayerStandoff(IPlayer player);
+        void OnPlayerBankrupt(IPlayer player);
 
         void ShowPlayerScore(ICardHolder holder);        
-        void ShowDealerHoleCard(ICard card);
-        
+        void ShowDealerHoleCard(ICard card);        
     }
 }
