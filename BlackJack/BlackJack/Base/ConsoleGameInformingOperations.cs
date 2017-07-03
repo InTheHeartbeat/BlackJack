@@ -84,5 +84,18 @@ namespace BlackJack.Base
             Console.WriteLine($"Player #{player.Id} won BLACKJACK, player bankroll: {player.Bankroll}");
             Console.ForegroundColor = temp;
         }
+
+        public void ShowDealerHoleCard(ICard card)
+        {
+            Console.WriteLine($"Hole dealer's card it {card.Face} {card.Suit}");
+        }
+
+        public void OnPlayerStandoff(IPlayer player)
+        {
+            ConsoleColor temp = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+            Console.WriteLine($"Player #{player.Id} standoff");
+            Console.ForegroundColor = temp;
+        }
     }
 }

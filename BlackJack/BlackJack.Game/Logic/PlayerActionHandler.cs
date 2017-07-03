@@ -47,11 +47,8 @@ namespace BlackJack.Game.Logic
                 player.Hand.Cards.Add(CardsGiver.PullCard(_table, _informingOperations));
                 _informingOperations.ShowPlayerScore(player);
 
-                if (player.Hand.CurrentScore > 21)
-                {
-                    player.Lost = true;                    
-                    _informingOperations.OnPlayerLost(player);
-                }
+                if (player.Hand.CurrentScore > 21)                
+                    player.Lost = true;                                                        
             }
         }        
     }

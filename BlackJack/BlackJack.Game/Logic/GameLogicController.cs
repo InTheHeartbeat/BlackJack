@@ -46,6 +46,8 @@ namespace BlackJack.Game.Logic
             GiveOutCards();
 
             TypingCards();
+            DealerPlay();
+
             FinalizeRound();
         }
 
@@ -122,17 +124,21 @@ namespace BlackJack.Game.Logic
 
         private void FinalizeRound()
         {
-            Table.Players.Where(player => player.Lost)
-                .ToList()
-                .ForEach(HandleLostPlayer);
-
-            Table.Players.Where(player => !player.Lost && player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore)
-                .ToList()
-                .ForEach(HandleWinner);
-
             Table.Players.Where(CheckNativeBlackJack)
                 .ToList()
                 .ForEach(HandleNativeBlackJackWinner);
+
+            Table.Players.Where(player => !player.Lost && (player.Hand.CurrentScore > Table.Dealer.Hand.CurrentScore || Table.Dealer.Hand.CurrentScore > 21) && !CheckNativeBlackJack(player))
+                .ToList()
+                .ForEach(HandleWinner);
+
+            Table.Players.Where(player => !player.Lost && player.Hand.CurrentScore == Table.Dealer.Hand.CurrentScore)
+                .ToList()
+                .ForEach(HandleStandoff);
+
+            Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= 21 && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
+                .ToList()
+                .ForEach(HandleLostPlayer);                        
         }
 
         private void HandleLostPlayer(IPlayer player)
@@ -151,6 +157,23 @@ namespace BlackJack.Game.Logic
         {
             player.Bankroll += Table.Dealer.GetBetValue(player) * 1.5;
             _informingOperations.OnPlayerWonBlackJack(player);
+        }
+
+        private void HandleStandoff(IPlayer player)
+        {
+            _informingOperations.OnPlayerStandoff(player);
+        }
+
+        private void DealerPlay()
+        {
+            _informingOperations.ShowDealerHoleCard(Table.Dealer.Hand.Cards.Last());
+            _informingOperations.ShowPlayerScore(Table.Dealer);
+
+            while (Table.Dealer.Hand.CurrentScore <= 16)
+            {
+                GiveCard(Table.Dealer);
+                _informingOperations.ShowPlayerScore(Table.Dealer);
+            }
         }
     }
 }
