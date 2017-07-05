@@ -4,17 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BlackJack.Game.Base;
+using BlackJack.Game.Entities.Card;
 using BlackJack.Game.Entities.Card.Interfaces;
 using BlackJack.Game.Enums;
 using BlackJack.Game.Logic.Interfaces;
 
 namespace BlackJack.Game.Logic
 {
-    public class HandScoreCalculator : IHandScoreCalculator
+    public class HandScoreCalculator
     {
         private readonly object _locker = new object();
 
-        public int CalcHandScore(IHand hand)
+        public int CalcHandScore(Hand hand)
         {
             lock (_locker)
             {
@@ -26,7 +27,7 @@ namespace BlackJack.Game.Logic
             }
         }
 
-        private int CalcSoftHandScore(IList<ICard> hand)
+        private int CalcSoftHandScore(List<Card> hand)
         {
             int score = CalcHardHandScore(hand);
 
@@ -45,11 +46,11 @@ namespace BlackJack.Game.Logic
             return score;
         }
 
-        private int CalcHardHandScore(IList<ICard> hand)
+        private int CalcHardHandScore(List<Card> hand)
         {
             int score = 0;
 
-            foreach (ICard card in hand)
+            foreach (Card card in hand)
             {
                 if (card.Face == Face.Two)
                 {

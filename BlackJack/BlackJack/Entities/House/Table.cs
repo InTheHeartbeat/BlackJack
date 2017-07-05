@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Logic.Interfaces;
+using BlackJack.Entities.Card;
+using BlackJack.Logic.Interfaces;
 
-namespace BlackJack.Game.Entities.House
+namespace BlackJack.Entities.House
 {
     public class Table
     {

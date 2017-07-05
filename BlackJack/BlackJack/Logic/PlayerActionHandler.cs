@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackJack.Game.Base;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Enums;
-using BlackJack.Game.Logic.Interfaces;
+﻿using BlackJack.Base;
+using BlackJack.Entities.House;
+using BlackJack.Enums;
+using BlackJack.Logic.Interfaces;
 
-namespace BlackJack.Game.Logic
+namespace BlackJack.Logic
 {
     public class PlayerActionHandler
     {

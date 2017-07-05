@@ -1,7 +1,6 @@
-﻿using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Enums;
+﻿using BlackJack.Enums;
 
-namespace BlackJack.Game.Entities.Card
+namespace BlackJack.Entities.Card
 {
     public class Card 
     {

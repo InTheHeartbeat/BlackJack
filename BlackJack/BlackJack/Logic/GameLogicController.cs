@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using BlackJack.Game.Base;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Enums;
-using BlackJack.Game.Logic.Interfaces;
+using BlackJack.Base;
+using BlackJack.Entities.Card;
+using BlackJack.Entities.Card.Interfaces;
+using BlackJack.Entities.House;
+using BlackJack.Enums;
+using BlackJack.Logic.Interfaces;
 
-namespace BlackJack.Game.Logic
+namespace BlackJack.Logic
 {
-    public class GameLogicController : IGameLogicController
+    public class GameLogicController
     {
         public int PlayersCount { get; internal set; }
 
@@ -52,7 +48,7 @@ namespace BlackJack.Game.Logic
                         RequestPlayersBets();
                         GiveOutCards();
 
-                        TypingCards();
+                        PlayersPlay();
                         DealerPlay();
 
                         FinalizeRound();
@@ -121,32 +117,38 @@ namespace BlackJack.Game.Logic
             CardsGiver.GiveCard(holder, Table, _informingOperations);            
         }
 
-        private void TypingCards()
+        private void PlayersPlay()
         {
-            Dictionary<IPlayer, bool> isStandPlayers = Table.Players.ToDictionary(player => player, player => false);
+            List<PlayerState> playerStates = Table.Players
+                .Select(player => new PlayerState() {Stand = false, Player = player})
+                .ToList();
 
-            while (isStandPlayers.Values.Contains(false))
+            while (playerStates.Any(state=>!state.Stand))
             {
-                foreach (IPlayer player in Table.Players)
+                CheckPlayersOutOfGame(playerStates.Where(state=>!state.Stand));
+                TypingCardsToActivePlayers(playerStates.Where(state=>!state.Stand));
+            }
+        }
+
+        private void CheckPlayersOutOfGame(IEnumerable<PlayerState> playerStates)
+        {
+            foreach (PlayerState state in playerStates)
+            {
+                state.Stand = state.Player.Lost || CheckNativeBlackJack(state.Player) ||
+                              state.Player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber;
+            }
+        }
+
+        private void TypingCardsToActivePlayers(IEnumerable<PlayerState> playerStates)
+        {
+            foreach (PlayerState state in playerStates)
+            {
+                PlayerAction? choosedAction = Table.Dealer.RequestAction(state.Player);
+                _actionHandler.HandleAction(state.Player, choosedAction);
+
+                if (choosedAction == PlayerAction.Stand)
                 {
-                    if (isStandPlayers[player])
-                    {
-                        continue;
-                    }
-
-                    if (player.Lost || CheckNativeBlackJack(player) || player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
-                    {
-                        isStandPlayers[player] = true;
-                        continue;
-                    }
-                   
-                    PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
-                    _actionHandler.HandleAction(player, choosedAction);
-
-                    if (choosedAction == PlayerAction.Stand)
-                    {
-                        isStandPlayers[player] = true;
-                    }
+                    state.Stand = true;
                 }
             }
         }
@@ -161,17 +163,7 @@ namespace BlackJack.Game.Logic
                 GiveCard(Table.Dealer);
                 _informingOperations.ShowPlayerScore(Table.Dealer);
             }
-        }
-
-        private bool CheckNativeBlackJack(IPlayer player)
-        {
-            if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber &&
-                player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)
-            {
-                return true;
-            }
-            return false;
-        }
+        }    
 
         private void FinalizeRound()
         {
@@ -190,6 +182,16 @@ namespace BlackJack.Game.Logic
             Table.Players.Where(player => player.Lost || (Table.Dealer.Hand.CurrentScore <= ConfigProvider.Provider.CurrentConfig.BlackJackNumber && player.Hand.CurrentScore < Table.Dealer.Hand.CurrentScore))
                 .ToList()
                 .ForEach(_actionHandler.HandleLostPlayer);                                              
-        }                
+        }
+
+        private bool CheckNativeBlackJack(IPlayer player)
+        {
+            if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber &&
+                player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

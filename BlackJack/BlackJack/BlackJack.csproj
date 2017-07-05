@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BlackJack.Game">
-      <HintPath>..\BlackJack.Game\bin\Debug\BlackJack.Game.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,10 +43,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ConsoleConfig.cs" />
-    <Compile Include="Base\ConsoleGameOperations.cs" />
-    <Compile Include="Base\ConsoleGameInformingOperations.cs" />
+    <Compile Include="Base\ConfigProvider.cs" />
+    <Compile Include="ConsoleOperations\ConsoleConfig.cs" />
+    <Compile Include="ConsoleOperations\ConsoleGameOperations.cs" />
+    <Compile Include="ConsoleOperations\ConsoleGameInformingOperations.cs" />
+    <Compile Include="Base\GameConfig.cs" />
+    <Compile Include="Base\CollectionExtensions.cs" />
+    <Compile Include="Entities\Card\Card.cs" />
+    <Compile Include="Entities\Card\Deck.cs" />
+    <Compile Include="Entities\Card\Hand.cs" />
+    <Compile Include="Entities\Card\Interfaces\ICardHolder.cs" />
+    <Compile Include="Entities\House\Table.cs" />
+    <Compile Include="Enums\Face.cs" />
+    <Compile Include="Enums\PlayerAction.cs" />
+    <Compile Include="Enums\Suit.cs" />
+    <Compile Include="Logic\CardsGiver.cs" />
+    <Compile Include="Logic\Dealer.cs" />
+    <Compile Include="Logic\GameLogicController.cs" />
+    <Compile Include="Logic\HandScoreCalculator.cs" />
+    <Compile Include="Logic\Interfaces\IDealer.cs" />
+    <Compile Include="Logic\Interfaces\IGameInformingOperations.cs" />
+    <Compile Include="Logic\Interfaces\IGameOperations.cs" />
+    <Compile Include="Logic\Interfaces\IPlayer.cs" />
     <Compile Include="Logic\Player.cs" />
+    <Compile Include="Logic\PlayerActionHandler.cs" />
+    <Compile Include="Logic\PlayerState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

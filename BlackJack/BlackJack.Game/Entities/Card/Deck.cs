@@ -6,9 +6,9 @@ using BlackJack.Game.Enums;
 
 namespace BlackJack.Game.Entities.Card
 {
-    public class Deck : IDeck
+    public class Deck
     {
-        private Stack<ICard> _cards;
+        private Stack<Card> _cards;
 
         public Deck()
         {            
@@ -17,7 +17,7 @@ namespace BlackJack.Game.Entities.Card
 
         public void Initialize()
         {
-            _cards = new Stack<ICard>();
+            _cards = new Stack<Card>();
 
             for (int deck = 0; deck < ConfigProvider.Provider.CurrentConfig.DecksCount; deck++)
             {
@@ -37,7 +37,7 @@ namespace BlackJack.Game.Entities.Card
             _cards.Shuffle();
         }
         
-        public ICard GetCard()
+        public Card GetCard()
         {
             return _cards.Pop();
         }

@@ -9,6 +9,6 @@ namespace BlackJack.Game.Entities.Card.Interfaces
     public interface ICardHolder
     {
         int Id { get; set; }
-        IHand Hand { get; set; }
+        Hand Hand { get; set; }
     }
 }

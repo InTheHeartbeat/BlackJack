@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Entities.Card.Interfaces;
+﻿using BlackJack.Entities.Card;
+using BlackJack.Entities.Card.Interfaces;
 
-namespace BlackJack.Game.Logic.Interfaces
+namespace BlackJack.Logic.Interfaces
 {
     public interface IGameInformingOperations
     {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using BlackJack.Game.Base;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Enums;
-using BlackJack.Game.Logic.Interfaces;
+using BlackJack.Base;
+using BlackJack.Entities.Card;
+using BlackJack.Entities.House;
+using BlackJack.Enums;
+using BlackJack.Logic.Interfaces;
 
-namespace BlackJack.Game.Logic
+namespace BlackJack.Logic
 {
     public class Dealer : IDealer
     {

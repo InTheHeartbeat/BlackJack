@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Logic.Interfaces;
+﻿using BlackJack.Entities.Card;
+using BlackJack.Entities.Card.Interfaces;
+using BlackJack.Entities.House;
+using BlackJack.Logic.Interfaces;
 
-namespace BlackJack.Game.Logic
+namespace BlackJack.Logic
 {
     internal static class CardsGiver
     {

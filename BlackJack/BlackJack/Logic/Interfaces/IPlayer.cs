@@ -1,7 +1,7 @@
-﻿using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Enums;
+﻿using BlackJack.Entities.Card.Interfaces;
+using BlackJack.Enums;
 
-namespace BlackJack.Game.Logic.Interfaces
+namespace BlackJack.Logic.Interfaces
 {
     public interface IPlayer : ICardHolder
     {        

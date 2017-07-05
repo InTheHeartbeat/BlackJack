@@ -1,30 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BlackJack.Game.Base;
-using BlackJack.Game.Entities.Card;
-using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Entities.House.Interfaces;
-using BlackJack.Game.Enums;
-using BlackJack.Game.Logic;
-using BlackJack.Game.Logic.Interfaces;
+using BlackJack.Base;
+using BlackJack.Entities.Card;
+using BlackJack.Enums;
+using BlackJack.Logic.Interfaces;
 
 namespace BlackJack.Logic
 {
     public class Player : IPlayer
     {
         public int Id { get; set; }
-        public IHand Hand { get; set; }
-        public IReadOnlyTable Table { get; set; }
+        public Hand Hand { get; set; }        
         public double Bankroll { get; set; }
         public bool Lost { get; set; }
 
-        public Player(IReadOnlyTable table)
+        public Player()
         {
-            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.ScoreCalculator);
-            Table = table;
+            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.ScoreCalculator);            
             Bankroll = ConfigProvider.Provider.CurrentConfig.InitialPlayerBankroll;
         }
 
@@ -41,10 +32,15 @@ namespace BlackJack.Logic
                 }
 
                 if (result > this.Bankroll || result < 0)
+                {
                     Console.WriteLine(
                         $"Invalid value, please enter a valid numeric value in range (0-{this.Bankroll}):");
-                else
+                }
+
+                if (result <= this.Bankroll && result > 0)
+                {
                     valid = true;
+                }
             }
             return result;
         }
@@ -52,10 +48,14 @@ namespace BlackJack.Logic
         public PlayerAction? DoAction()
         {
             string selectedAction = Console.ReadLine().Replace(" ", "").ToLower();
-            if (selectedAction == "h")            
-                return PlayerAction.Hit;            
-            if(selectedAction == "s")
+            if (selectedAction == "h")
+            {
+                return PlayerAction.Hit;
+            }
+            if (selectedAction == "s")
+            {
                 return PlayerAction.Stand;
+            }
             return null;
         }
     }

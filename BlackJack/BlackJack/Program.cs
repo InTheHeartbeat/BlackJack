@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BlackJack.Base;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Logic;
+using BlackJack.ConsoleOperations;
+using BlackJack.Logic;
 
 namespace BlackJack
 {

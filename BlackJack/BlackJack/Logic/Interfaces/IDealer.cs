@@ -1,8 +1,7 @@
-﻿using BlackJack.Game.Entities.Card.Interfaces;
-using BlackJack.Game.Entities.House;
-using BlackJack.Game.Enums;
+﻿using BlackJack.Entities.Card.Interfaces;
+using BlackJack.Enums;
 
-namespace BlackJack.Game.Logic.Interfaces
+namespace BlackJack.Logic.Interfaces
 {
     public interface IDealer : ICardHolder
     {        
