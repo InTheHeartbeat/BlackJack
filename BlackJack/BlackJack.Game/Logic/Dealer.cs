@@ -26,7 +26,7 @@ namespace BlackJack.Game.Logic
         {
             _informingOperations = informingOperations;
             Table = table;
-            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.HandScoreCalculator);
+            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.ScoreCalculator);
             _playerPairBet = new Dictionary<IPlayer, double>();
         }
         

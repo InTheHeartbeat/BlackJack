@@ -13,11 +13,14 @@ namespace BlackJack.Game.Logic
     internal static class CardsGiver
     {
         internal static void GiveCard(ICardHolder holder, ITable table, IGameInformingOperations informingOperations)
-        {                        
+        {
             if (holder is Dealer && holder.Hand.Cards.Count == 1)
-                holder.Hand.Cards.Add(PullHoleCard(table,informingOperations));
-            else
-                holder.Hand.Cards.Add(PullCard(table,informingOperations));
+            {
+                holder.Hand.Cards.Add(PullHoleCard(table, informingOperations));
+                return;
+            }
+
+            holder.Hand.Cards.Add(PullCard(table, informingOperations));
         }
 
         internal static ICard PullCard(ITable table, IGameInformingOperations informingOperations)

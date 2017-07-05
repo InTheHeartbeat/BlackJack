@@ -11,6 +11,6 @@ namespace BlackJack.Game.Base
         public static ConfigProvider Provider => _instance ?? (_instance = new ConfigProvider());
         private static ConfigProvider _instance;
 
-        public GameConfig CurrentConfig = new DefaultGameConfig();
+        public GameConfig CurrentConfig = new GameConfig();
     }
 }

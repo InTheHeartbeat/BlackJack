@@ -19,9 +19,10 @@ namespace BlackJack.Game.Logic
             lock (_locker)
             {
                 if (hand.Cards.Any(card => card.Face == Face.Ace))
+                {
                     return CalcSoftHandScore(hand.Cards);
-                else
-                    return CalcHardHandScore(hand.Cards);
+                }
+                return CalcHardHandScore(hand.Cards);
             }
         }
 
@@ -29,10 +30,18 @@ namespace BlackJack.Game.Logic
         {
             int score = CalcHardHandScore(hand);
 
-            if ((score + ConfigProvider.Provider.CurrentConfig.FirstAceScore) <= ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
-                score += ConfigProvider.Provider.CurrentConfig.FirstAceScore;
-            else
-                score += ConfigProvider.Provider.CurrentConfig.SecondAceScore;
+            if ((score + ConfigProvider.Provider.CurrentConfig.FirstAceScore) <=
+                ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
+            {
+                return score + ConfigProvider.Provider.CurrentConfig.FirstAceScore;
+            }
+
+            if ((score + ConfigProvider.Provider.CurrentConfig.FirstAceScore) >
+                ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
+            {
+                return score + ConfigProvider.Provider.CurrentConfig.SecondAceScore;
+            }
+
             return score;
         }
 
@@ -42,49 +51,45 @@ namespace BlackJack.Game.Logic
 
             foreach (ICard card in hand)
             {
-                switch (card.Face)
+                if (card.Face == Face.Two)
                 {
-                    case Face.Two:
-                        score += 2;
-                        break;
-                    case Face.Three:
-                        score += 3;
-                        break;
-                    case Face.Four:
-                        score += 4;
-                        break;
-                    case Face.Five:
-                        score += 5;
-                        break;
-                    case Face.Six:
-                        score += 6;
-                        break;
-                    case Face.Seven:
-                        score += 7;
-                        break;
-                    case Face.Eight:
-                        score += 8;
-                        break;
-                    case Face.Nine:
-                        score += 9;
-                        break;
-                    case Face.Ten:
-                        score += 10;
-                        break;
-                    case Face.Jack:
-                        score += 10;
-                        break;
-                    case Face.Queen:
-                        score += 10;
-                        break;
-                    case Face.King:
-                        score += 10;
-                        break;
+                    score += 2;
                 }
-
+                if (card.Face == Face.Three)
+                {
+                    score += 3;
+                }
+                if (card.Face == Face.Four)
+                {
+                    score += 4;
+                }
+                if (card.Face == Face.Five)
+                {
+                    score += 5;
+                }
+                if (card.Face == Face.Six)
+                {
+                    score += 6;
+                }
+                if (card.Face == Face.Seven)
+                {
+                    score += 7;
+                }
+                if (card.Face == Face.Eight)
+                {
+                    score += 8;
+                }
+                if (card.Face == Face.Nine)
+                {
+                    score += 9;
+                }
+                if (card.Face == Face.Ten || card.Face == Face.Jack || card.Face == Face.Queen ||
+                    card.Face == Face.King)
+                {
+                    score += 10;
+                }
             }
             return score;
         }
-
     }
 }

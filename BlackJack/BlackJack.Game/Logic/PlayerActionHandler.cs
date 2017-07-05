@@ -25,13 +25,13 @@ namespace BlackJack.Game.Logic
 
         public void HandleAction(IPlayer player, PlayerAction? action)
         {
-            switch (action)
+            if (action == PlayerAction.Hit)
             {
-                case PlayerAction.Hit:
-                    HandleHit(player);
-                    break;
-                    case PlayerAction.Stand:
-                        HandleStand(player);break;
+                HandleHit(player);
+            }
+            if (action == PlayerAction.Stand)
+            {
+                HandleStand(player);
             }
         }
 
@@ -77,8 +77,10 @@ namespace BlackJack.Game.Logic
                 player.Hand.Cards.Add(CardsGiver.PullCard(_table, _informingOperations));
                 _informingOperations.ShowPlayerScore(player);
 
-                if (player.Hand.CurrentScore > ConfigProvider.Provider.CurrentConfig.BlackJackNumber)                
-                    player.Lost = true;                                                        
+                if (player.Hand.CurrentScore > ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
+                {
+                    player.Lost = true;
+                }                                                        
             }
         }        
     }

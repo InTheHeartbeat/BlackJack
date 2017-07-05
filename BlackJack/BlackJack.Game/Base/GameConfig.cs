@@ -8,52 +8,35 @@ using BlackJack.Game.Logic.Interfaces;
 
 namespace BlackJack.Game.Base
 {
-    public abstract class GameConfig
+    public class GameConfig
     {
-        public int InitialCardsCount;
-        public int MaxPlayers;
-        public int MinPlayers;
+        public int InitialCardsCount = 2;
 
-        public double InitialPlayerBankroll;
+        public int MinPlayers = 1;
+        public int MaxPlayers = 7;
 
-        public int DecksCount;
-        public int FaceCount;
-        public int SuitCount;
+        public int InitialPlayerBankroll = 100;
 
-        public int SecondAceScore;
-        public int FirstAceScore;
+        public int DecksCount = 1;
+        public int FaceCount = 13;
+        public int SuitCount = 4;
 
-        public double BlackJackRatio;
+        public int SecondAceScore = 1;
+        public int FirstAceScore = 11;
 
-        public int CardsCountForNativeBlackJack;
+        public double BlackJackRatio = 1.5;
 
-        public int ScoreLimitOfDealerAbilityToTakeCards;
+        public int CardsCountForNativeBlackJack = 2;
 
-        public int BlackJackNumber;
+        public int ScoreLimitOfDealerAbilityToTakeCards = 16;
 
-        public IHandScoreCalculator HandScoreCalculator;
+        public int BlackJackNumber = 21;
+
+        public HandScoreCalculator ScoreCalculator = new HandScoreCalculator();
 
         public GameConfig()
         {
-            
-        }
 
-        protected GameConfig(int initialCardsCount, int maxPlayers, int minPlayers, double initialPlayerBankroll, int decksCount, int faceCount, int suitCount, int secondAceScore, int firstAceScore, double blackJackRatio, int cardsCountForNativeBlackJack, int scoreLimitOfDealerAbilityToTakeCards, int blackJackNumber, IHandScoreCalculator handScoreCalculator)
-        {
-            InitialCardsCount = initialCardsCount;
-            MaxPlayers = maxPlayers;
-            MinPlayers = minPlayers;
-            InitialPlayerBankroll = initialPlayerBankroll;
-            DecksCount = decksCount;
-            FaceCount = faceCount;
-            SuitCount = suitCount;
-            SecondAceScore = secondAceScore;
-            FirstAceScore = firstAceScore;
-            BlackJackRatio = blackJackRatio;
-            CardsCountForNativeBlackJack = cardsCountForNativeBlackJack;
-            ScoreLimitOfDealerAbilityToTakeCards = scoreLimitOfDealerAbilityToTakeCards;
-            BlackJackNumber = blackJackNumber;
-            HandScoreCalculator = handScoreCalculator;
         }
     }
 }

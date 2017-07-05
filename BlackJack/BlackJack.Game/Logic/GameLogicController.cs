@@ -28,7 +28,9 @@ namespace BlackJack.Game.Logic
         public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations, GameConfig config)
         {
             if (config != null)
+            {
                 ConfigProvider.Provider.CurrentConfig = config;
+            }
 
             Table = new Table();
 
@@ -57,13 +59,21 @@ namespace BlackJack.Game.Logic
                         FinalizeRound();
 
                         if (!_operations.RequestContinue())
+                        {
                             break;
+                        }
                     }
-                    else                    
-                        break;                    
+
+                    if (Table.Players.Count <= 0)
+                    {
+                        break;
+                    }                    
                 }
-                if(!_operations.RequestRestart())
-                    break;                
+
+                if (!_operations.RequestRestart())
+                {
+                    break;
+                }                
             }
         }
         
@@ -120,19 +130,23 @@ namespace BlackJack.Game.Logic
             {
                 foreach (IPlayer player in Table.Players)
                 {
-                    if (player.Lost)
-                        isStandPlayers[player] = true;
-                    else if (CheckNativeBlackJack(player))
-                        isStandPlayers[player] = true;
-                    else if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
-                        isStandPlayers[player] = true;
-                    else if (!isStandPlayers[player])
+                    if (isStandPlayers[player])
                     {
-                        PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
-                        _actionHandler.HandleAction(player, choosedAction);
+                        continue;
+                    }
 
-                        if (choosedAction == PlayerAction.Stand)
-                            isStandPlayers[player] = true;
+                    if (player.Lost || CheckNativeBlackJack(player) || player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber)
+                    {
+                        isStandPlayers[player] = true;
+                        continue;
+                    }
+                   
+                    PlayerAction? choosedAction = Table.Dealer.RequestAction(player);
+                    _actionHandler.HandleAction(player, choosedAction);
+
+                    if (choosedAction == PlayerAction.Stand)
+                    {
+                        isStandPlayers[player] = true;
                     }
                 }
             }
@@ -152,8 +166,11 @@ namespace BlackJack.Game.Logic
 
         private bool CheckNativeBlackJack(IPlayer player)
         {
-            if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber && player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)
+            if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber &&
+                player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)
+            {
                 return true;
+            }
             return false;
         }
 

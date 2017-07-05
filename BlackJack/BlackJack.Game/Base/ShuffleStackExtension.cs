@@ -13,8 +13,10 @@ namespace BlackJack.Game.Base
             Random rand = new Random();
             T[] values = stack.ToArray();
             stack.Clear();
-            foreach (T value in values.OrderBy(val=>rand.Next()))
+            foreach (T value in values.OrderBy(val => rand.Next()))
+            {
                 stack.Push(value);
+            }
         }
     }
 }

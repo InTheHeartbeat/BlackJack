@@ -23,7 +23,7 @@ namespace BlackJack.Logic
 
         public Player(IReadOnlyTable table)
         {
-            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.HandScoreCalculator);
+            Hand = new Hand(ConfigProvider.Provider.CurrentConfig.ScoreCalculator);
             Table = table;
             Bankroll = ConfigProvider.Provider.CurrentConfig.InitialPlayerBankroll;
         }

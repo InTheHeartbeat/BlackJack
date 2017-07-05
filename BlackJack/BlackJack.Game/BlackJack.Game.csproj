@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ConfigProvider.cs" />
-    <Compile Include="Base\DefaultGameConfig.cs" />
     <Compile Include="Base\GameConfig.cs" />
     <Compile Include="Base\ShuffleStackExtension.cs" />
     <Compile Include="Entities\Card\Card.cs" />
