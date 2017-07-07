@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using BlackJack.Base;
 using BlackJack.Logic;
-using BlackJack.Logic.Interfaces;
+
 
 namespace BlackJack.ConsoleOperations
 {
-    public class ConsoleGameOperations : IGameOperations
+    public class ConsoleGameOperations
     {
         public int RequestPlayersCount()
         {
@@ -38,7 +38,7 @@ namespace BlackJack.ConsoleOperations
             }
             return result;
         }
-        public IEnumerable<IPlayer> GetPlayers(int playerCount)
+        public IEnumerable<Player> GetPlayers(int playerCount)
         {
             List<Player> players = new List<Player>();
             for (int i = 0; i < playerCount; i++)

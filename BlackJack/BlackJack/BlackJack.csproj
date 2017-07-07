@@ -61,10 +61,6 @@
     <Compile Include="Logic\Dealer.cs" />
     <Compile Include="Logic\GameLogicController.cs" />
     <Compile Include="Logic\HandScoreCalculator.cs" />
-    <Compile Include="Logic\Interfaces\IDealer.cs" />
-    <Compile Include="Logic\Interfaces\IGameInformingOperations.cs" />
-    <Compile Include="Logic\Interfaces\IGameOperations.cs" />
-    <Compile Include="Logic\Interfaces\IPlayer.cs" />
     <Compile Include="Logic\Player.cs" />
     <Compile Include="Logic\PlayerActionHandler.cs" />
     <Compile Include="Logic\PlayerState.cs" />

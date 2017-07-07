@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BlackJack.Base;
+using BlackJack.ConsoleOperations;
 using BlackJack.Entities.Card;
 using BlackJack.Entities.Card.Interfaces;
 using BlackJack.Entities.House;
 using BlackJack.Enums;
-using BlackJack.Logic.Interfaces;
 
 namespace BlackJack.Logic
 {
@@ -15,12 +15,12 @@ namespace BlackJack.Logic
 
         private Table Table { get; }
 
-        private readonly IGameOperations _operations;
-        private readonly IGameInformingOperations _informingOperations;
+        private readonly ConsoleGameOperations _operations;
+        private readonly ConsoleGameInformingOperations _informingOperations;
 
         private readonly PlayerActionHandler _actionHandler;
 
-        public GameLogicController(IGameOperations operations, IGameInformingOperations informingOperations, GameConfig config)
+        public GameLogicController(ConsoleGameOperations operations, ConsoleGameInformingOperations informingOperations, GameConfig config)
         {
             if (config != null)
             {
@@ -94,7 +94,7 @@ namespace BlackJack.Logic
             Table.Dealer = new Dealer(_informingOperations, Table);
             Table.Deck = new Deck();
 
-            foreach (IPlayer player in Table.Players)
+            foreach (Player player in Table.Players)
             {
                 player.Lost = false;
                 player.Hand.Cards.Clear();                
@@ -184,7 +184,7 @@ namespace BlackJack.Logic
                 .ForEach(_actionHandler.HandleLostPlayer);                                              
         }
 
-        private bool CheckNativeBlackJack(IPlayer player)
+        private bool CheckNativeBlackJack(Player player)
         {
             if (player.Hand.CurrentScore == ConfigProvider.Provider.CurrentConfig.BlackJackNumber &&
                 player.Hand.Cards.Count <= ConfigProvider.Provider.CurrentConfig.CardsCountForNativeBlackJack)

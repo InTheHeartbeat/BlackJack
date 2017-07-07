@@ -1,23 +1,23 @@
 ﻿using BlackJack.Base;
+using BlackJack.ConsoleOperations;
 using BlackJack.Entities.House;
 using BlackJack.Enums;
-using BlackJack.Logic.Interfaces;
 
 namespace BlackJack.Logic
 {
     public class PlayerActionHandler
     {
         private Table _table;
-        private IGameInformingOperations _informingOperations;
+        private ConsoleGameInformingOperations _informingOperations;
 
-        public PlayerActionHandler(Table table, IGameInformingOperations informingOperations)
+        public PlayerActionHandler(Table table, ConsoleGameInformingOperations informingOperations)
         {
             _table = table;
             _informingOperations = informingOperations;
         }
 
 
-        public void HandleAction(IPlayer player, PlayerAction? action)
+        public void HandleAction(Player player, PlayerAction? action)
         {
             if (action == PlayerAction.Hit)
             {
@@ -29,7 +29,7 @@ namespace BlackJack.Logic
             }
         }
 
-        public void HandleLostPlayer(IPlayer player)
+        public void HandleLostPlayer(Player player)
         {
             player.Bankroll -= _table.Dealer.GetBetValue(player);
             _informingOperations.OnPlayerLost(player);
@@ -41,29 +41,29 @@ namespace BlackJack.Logic
             }
         }
 
-        public void HandleWinner(IPlayer player)
+        public void HandleWinner(Player player)
         {
             player.Bankroll += _table.Dealer.GetBetValue(player);
             _informingOperations.OnPlayerWon(player);
         }
 
-        public void HandleNativeBlackJackWinner(IPlayer player)
+        public void HandleNativeBlackJackWinner(Player player)
         {
             player.Bankroll += _table.Dealer.GetBetValue(player) * ConfigProvider.Provider.CurrentConfig.BlackJackRatio;
             _informingOperations.OnPlayerWonBlackJack(player);
         }
 
-        public void HandleStandoff(IPlayer player)
+        public void HandleStandoff(Player player)
         {
             _informingOperations.OnPlayerStandoff(player);
         }
 
-        private void HandleStand(IPlayer player)
+        private void HandleStand(Player player)
         {
             _informingOperations.OnPlayerStand(player);
         }
 
-        private void HandleHit(IPlayer player)
+        private void HandleHit(Player player)
         {
             if (player.Hand.CurrentScore < ConfigProvider.Provider.CurrentConfig.BlackJackNumber && !player.Lost)
             {

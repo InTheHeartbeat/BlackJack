@@ -1,12 +1,13 @@
 ﻿using System;
 using BlackJack.Base;
 using BlackJack.Entities.Card;
+using BlackJack.Entities.Card.Interfaces;
 using BlackJack.Enums;
-using BlackJack.Logic.Interfaces;
+
 
 namespace BlackJack.Logic
 {
-    public class Player : IPlayer
+    public class Player : ICardHolder
     {
         public int Id { get; set; }
         public Hand Hand { get; set; }        
